@@ -1,49 +1,55 @@
+def rel_to_abs_path(*pth):
+    import os
+    sep = os.sep
+    return sep.join(__file__.split(sep)[:-2] + list(pth))
+
+
 favorites = []
 last_open = ""
+DB_PATH = rel_to_abs_path("floralearn", "db.json")
+FAVORITES_PATH = rel_to_abs_path("usrdata", "favorites")
+LASTOPEN_PATH = rel_to_abs_path("usrdata", "lastopen")
+data = {}
 
 
-def get_favorites(path="usrdata\\favorites"):
+def get_favorites(path=FAVORITES_PATH):
     """Favorite items receiving function. Should be called when 'favorites' button is pressed"""
-    try:
-        with open(path) as fin:
-            return fin.read().split("\n")
-    except FileNotFoundError:
-        pass
-    except Exception:
-        pass
+    with open(path) as fin:
+        return fin.read().split("\n")
 
 
-def add_favorite(item, path="usrdata\\favorites"):
+def add_favorite(item, path=FAVORITES_PATH):
     """Favorite items memorizing function. Should be called when 'add to favorite' button is pressed"""
-    try:
-        with open(path, mode="a") as fout:
-            fout.writelines([item])
-    except FileNotFoundError:
-        pass
-    except Exception:
-        pass
+    with open(path, mode="a") as fout:
+        fout.writelines([item])
 
 
-def set_last_opened(item, path="usrdata\\lastopen"):
+def set_last_opened(item, path=LASTOPEN_PATH):
     """Last opened item memorization. Should be called when an item is being opened (slower) / app's exit (faster)"""
-    try:
-        with open(path, mode="w") as fout:
-            fout.write(item)
-    except FileNotFoundError:
-        pass
-    except Exception:
-        pass
+    with open(path, mode="w") as fout:
+        fout.write(item)
 
 
-def get_last_opened(path="usrdata\\lastopen"):
+def get_last_opened(path=LASTOPEN_PATH):
     """Last opened item receiving. Should be called on startup"""
-    try:
-        with open(path) as fin:
-            return fin.read()
-    except FileNotFoundError:
-        pass
-    except Exception:
-        pass
+    with open(path) as fin:
+        return fin.read()
+
+
+def load_db():
+    import json
+    with open(DB_PATH) as db:
+        return json.loads(db.read())
+
+
+def get_subtree(pth):
+    global data
+    cur = data
+    i = 0
+    while i < len(pth):
+        cur = cur[list(cur.keys())[int(pth[i])]]
+        i += 1
+    return cur
 
 
 class Program:
@@ -51,22 +57,19 @@ class Program:
         pass
 
     def main(self):
-        # load db
-        # ...
-        # check for files
+        global data
+        data = load_db()
+
         import os
-        try:
-            global favorites, last_open
-            if not os.path.exists("usrdata\\favorites"):
-                with open("usrdata\\favorites", "w") as fout:
-                    fout.write("")
-            favorites = get_favorites("usrdata\\favorites")
-            if not os.path.exists("usrdata\\lastopen"):
-                with open("usrdata\\lastopen", "w") as fout:
-                    fout.write("")
-            last_open = get_last_opened("usrdata\\lastopen")
-        except Exception:
-            pass
+        global favorites, last_open
+        if not os.path.exists(FAVORITES_PATH):
+            with open(FAVORITES_PATH, "w") as fout:
+                fout.write("")
+        favorites = get_favorites(FAVORITES_PATH)
+        if not os.path.exists(LASTOPEN_PATH):
+            with open(LASTOPEN_PATH, "w") as fout:
+                fout.write("")
+        last_open = get_last_opened(LASTOPEN_PATH)
         # if last_open:
         #     load(last_open)
         # else:
@@ -75,3 +78,4 @@ class Program:
         # main loop
 
         return 0
+

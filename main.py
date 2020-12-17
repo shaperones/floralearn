@@ -1,4 +1,4 @@
-from program import Program
+from floralearn.program import Program
 import sys
 
 if __name__ == "__main__":
