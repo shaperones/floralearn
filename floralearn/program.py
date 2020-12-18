@@ -106,25 +106,33 @@ class TreeWidget(Scatter):
         with self.canvas:
             # Color(0.5, 0.5, 0.5, 0.5)
             for key, item in poses.items():
+                bg_color0 = bg_color1 = ColorTable.buttons.rgba
+                if key == current_path[:len(key)] and key != current_path:
+                    if current_path[len(key)] == "0":
+                        bg_color0 = ColorTable.lines.rgba
+                    else:
+                        bg_color1 = ColorTable.lines.rgba
                 if len(quotes[key]) == 1:
+                    if key == current_path:
+                        bg_color1 = ColorTable.lines.rgba
                     self.add_widget(Button(pos=item, size=node_size, text=quotes[key][0],
                                            on_press=perform(open_quotes, quote=key),
                                            color=ColorTable.lines.rgba,
-                                           background_color=ColorTable.buttons.rgba,
+                                           background_color=bg_color1,
                                            border=[10] * 4))
                 else:
                     self.add_widget(Button(pos=item, size=(node_size[0], node_size[1] // 2),
                                            text=quotes[key][0],
                                            on_press=perform(open_quotes, quote=key),
                                            color=ColorTable.lines.rgba,
-                                           background_color=ColorTable.buttons.rgba,
+                                           background_color=bg_color0,
                                            border=[10] * 4))
                     self.add_widget(Button(pos=(item[0], item[1] + node_size[1] // 2),
                                            size=(node_size[0], node_size[1] // 2),
                                            text=quotes[key][1],
                                            on_press=perform(open_quotes, quote=key),
                                            color=ColorTable.lines.rgba,
-                                           background_color=ColorTable.buttons.rgba,
+                                           background_color=bg_color1,
                                            border=[10] * 4))
 
                 if key != "":
@@ -157,20 +165,19 @@ class QuotesScreen(Screen):
 
     def on_enter(self, *args):
         self.clear_widgets()
-        cur = get_subtree(current_path)
-        if cur.get("__id__") == "end_node":
-            self.add_widget(Label(text=cur["name"], color=ColorTable.lines.rgba))
+        if len(quotes[current_path]) == 1:
+            self.add_widget(Label(text=quotes[current_path][0], color=ColorTable.lines.rgba))
         else:
             layout = BoxLayout(orientation="vertical", size=self.size,
                                pos=self.pos, padding=[100])
             layout.add_widget(Button(
-                text=list(cur.keys())[0],
+                text=quotes[current_path][0],
                 color=ColorTable.lines.rgba,
                 on_press=perform(open_quotes, quote=current_path + "0"),
                 background_color=ColorTable.buttons.rgba,
                 border=[10]*4))
             layout.add_widget(Button(
-                text=list(cur.keys())[1],
+                text=quotes[current_path][1],
                 color=ColorTable.lines.rgba,
                 on_press=perform(open_quotes, quote=current_path + "1"),
                 background_color=ColorTable.buttons.rgba,
