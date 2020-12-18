@@ -60,9 +60,9 @@ poses = {}          # one-level dictionary (no nesting) path-to-place
 # where each node should be displayed in tree_displaying_screen
 quotes = {}         # one-level dict path-to-quotes where if item is a list with 2 strings => this node is not end
 # and have thesis (first) and antithesis (second). else it's an end_node and have only name of such Family
-node_offset = (300, 200)        # ui setting in constant.
+node_offset = (800, 400)        # ui setting in constant.
 # TODO maybe it is better to place it somewhere else in the future, not in code
-node_size = (200, 150)          # ui setting in constant
+node_size = (600, 300)          # ui setting in constant
 
 
 def proceed_tree():
@@ -152,12 +152,18 @@ class TreeWidget(Scatter):
                         bg_color1 = ColorTable.lines.rgba
                     self.add_widget(Button(pos=item, size=node_size, text=quotes[key][0],
                                            on_release=perform(open_quotes, quote=key),
+                                           text_size=(500, 200),
+                                           halign='center',
+                                           valign='center',
                                            color=ColorTable.lines.rgba,
                                            background_color=bg_color1,
                                            border=[10] * 4))
                 else:
                     self.add_widget(Button(pos=item, size=(node_size[0], node_size[1] // 2),
                                            text=quotes[key][0],
+                                           text_size=(500, 100),
+                                           halign='center',
+                                           valign='center',
                                            on_release=perform(open_quotes, quote=key),
                                            color=ColorTable.lines.rgba,
                                            background_color=bg_color0,
@@ -165,6 +171,9 @@ class TreeWidget(Scatter):
                     self.add_widget(Button(pos=(item[0], item[1] + node_size[1] // 2),
                                            size=(node_size[0], node_size[1] // 2),
                                            text=quotes[key][1],
+                                           text_size=(500, 100),
+                                           halign='center',
+                                           valign='center',
                                            on_release=perform(open_quotes, quote=key),
                                            color=ColorTable.lines.rgba,
                                            background_color=bg_color1,
@@ -211,12 +220,18 @@ class QuotesScreen(Screen):
                                pos=self.pos, padding=[100])
             layout.add_widget(Button(
                 text=quotes[current_path][0],
+                text_size=(600, 400),
+                halign='center',
+                valign='center',
                 color=ColorTable.lines.rgba,
                 on_release=perform(open_quotes, quote=current_path + "0"),
                 background_color=ColorTable.buttons.rgba,
                 border=[10]*4))
             layout.add_widget(Button(
                 text=quotes[current_path][1],
+                text_size=(600, 400),
+                halign='center',
+                valign='center',
                 color=ColorTable.lines.rgba,
                 on_release=perform(open_quotes, quote=current_path + "1"),
                 background_color=ColorTable.buttons.rgba,
@@ -227,12 +242,12 @@ class QuotesScreen(Screen):
                                  color=ColorTable.lines.rgba,
                                  background_color=ColorTable.buttons.rgba,
                                  border=[10] * 4))
-        layout.add_widget(Button(text="favs", on_release=open_favorites,
+        layout.add_widget(Button(text="F", on_release=open_favorites,
                                  color=ColorTable.lines.rgba,
                                  background_color=ColorTable.buttons.rgba,
                                  border=[10] * 4
                                  ))
-        layout.add_widget(Button(text="add\nto\nfavs", on_release=self.add_fav,
+        layout.add_widget(Button(text="+F", on_release=self.add_fav,
                                  color=ColorTable.lines.rgba,
                                  background_color=ColorTable.buttons.rgba,
                                  border=[10] * 4
@@ -258,6 +273,9 @@ class FavoritesScreen(Screen):
         for num, fav in enumerate(favorites):
             bl = BoxLayout(orientation="horizontal")
             bl.add_widget(Button(text=quotes[fav][0], on_release=perform(open_quotes, quote=fav),
+                                 text_size=(800, 50),
+                                 halign='center',
+                                 valign='center',
                                  color=ColorTable.lines.rgba,
                                  background_color=ColorTable.buttons.rgba,
                                  border=[10] * 4))
