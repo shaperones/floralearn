@@ -16,3 +16,21 @@
 Источник тез, антитез и ключей: 
 Орлова Н. И. Определитель высших растений Вологодской области.
 Вологда: ВШУ, издательство «Русь», 1997. 264 с.
+# Install
+1) download python3.7
+2) pip install kivy=1.11.1
+3) clone https://github.com/shaperones/floralearn.git
+4) run main.py
+5) profit !!!
+#What can I do?
+* determine a plant by clicking on the statements you agree with
+* see the tree of families by clicking on "tree"
+* add the page to the Favourites by clicking on "+F"
+* check your Favourites clicking on "F"
+* delete the page from the Favourites by clicking on "del" in the tab "F"
+* frequently move between pages and families, flipping through the tab "tree"
+# Future of floralearn
+1) compiling for android (plz help)
+2) add some pictures to the families' pages
+3) add determinant for species
+
